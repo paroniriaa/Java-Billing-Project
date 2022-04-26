@@ -1,4 +1,4 @@
-package cmpe;
+package cmpe.client;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,6 +6,10 @@ import java.util.List;
 public class Client {
     private String shoppingCardNumber;
     private HashMap<String, Integer> shoppingList;
+
+    public Client(){
+
+    }
 
     public Client(List<List<String>> shoppingInfo) {
         String cardNumber = shoppingInfo.get(1).get(2);
@@ -17,8 +21,8 @@ public class Client {
         if (shoppingInfo != null && !shoppingInfo.isEmpty()){
             shoppingInfo.remove(0);
             for (List entry : shoppingInfo){
-                String itemName = String.valueOf(entry.get(0));
-                itemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1);
+                String fetchedName = String.valueOf(entry.get(0));
+                String itemName = fetchedName.substring(0, 1).toUpperCase() + fetchedName.substring(1).toLowerCase();
                 Integer itemQuantity = Integer.parseInt((String) entry.get(1));
                 if (itemName != null && !itemName.isBlank() && itemName.matches("[a-zA-Z]+")){
                     list.put(itemName, itemQuantity);
@@ -45,5 +49,13 @@ public class Client {
 
     public void setShoppingList(HashMap<String, Integer> shoppingList) {
         this.shoppingList = shoppingList;
+    }
+
+    @Override
+    public String toString() {
+        return "Client {" +
+                "shoppingCardNumber='" + shoppingCardNumber + '\'' +
+                ", shoppingList=" + shoppingList +
+                '}';
     }
 }

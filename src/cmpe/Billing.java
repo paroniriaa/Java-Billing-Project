@@ -1,39 +1,31 @@
 package cmpe;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import cmpe.client.Client;
+import cmpe.server.Store;
+import cmpe.utility.FileHandler;
+import cmpe.utility.RecordHandler;
 
+import static java.lang.System.exit;
 
 public class Billing {
 
     public static void main(String[] args) {
-        List<List<String>> records = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File("src/input/shopping_list.csv"))) {
-            while (scanner.hasNextLine()) {
-                records.add(getRecordFromLine(scanner.nextLine()));
-            }
-            Client client = new Client(records);
+        try {
+            String shoppingListFile = "src/input/shopping_list.csv";
+            String storageListFile= "src/input/storage_list.csv";
+            FileHandler.deletePreviousLogFile();
+            RecordHandler shoppingRecord = new RecordHandler(shoppingListFile);
+            RecordHandler storageRecord = new RecordHandler(storageListFile);
+            System.out.println(shoppingRecord);
+            System.out.println(storageRecord);
+            Client client = new Client(shoppingRecord.getRecord());
             System.out.println(client);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Store store = new Store(storageRecord.getRecord());
+            System.out.println(store);
         }
-    }
-
-    private final static String COMMA_DELIMITER = ",";
-
-    private static List<String> getRecordFromLine(String line) {
-        List<String> values = new ArrayList<>();
-        try (Scanner rowScanner = new Scanner(line)) {
-            rowScanner.useDelimiter(COMMA_DELIMITER);
-            while (rowScanner.hasNext()) {
-                values.add(rowScanner.next());
-            }
+        catch (Exception e) {
+            FileHandler.logErrorToFile(e);
+            exit(-1);
         }
-        return values;
     }
 }
