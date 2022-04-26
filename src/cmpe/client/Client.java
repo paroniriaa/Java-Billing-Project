@@ -4,6 +4,20 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Client {
+    public enum CardNumberType {
+        CARD_NUMBER_A("5.41E+15"),
+        CARD_NUMBER_B("4.12E+12"),
+        CARD_NUMBER_C("3.41E+14"),
+        CARD_NUMBER_D("6.01E+15");
+
+        public final String label;
+
+        CardNumberType(String label) {
+            this.label = label;
+        }
+    }
+
+    private CardNumberType shoppingCardType;
     private String shoppingCardNumber;
     private HashMap<String, Integer> shoppingList;
 
@@ -12,9 +26,11 @@ public class Client {
     }
 
     public Client(List<List<String>> shoppingInfo) {
-        String cardNumber = shoppingInfo.get(1).get(2);
-        if (cardNumber != null && !cardNumber.isBlank()){
-            setShoppingCardNumber(cardNumber);
+        String cardNumberLabel = String.valueOf(shoppingInfo.get(1).get(2));
+        CardNumberType cardNumberType = findCardNumberTypeByLabel(cardNumberLabel);
+        if (cardNumberType != null){
+            setShoppingCardType(cardNumberType);
+            setShoppingCardNumber(cardNumberType.label);
         }
 
         HashMap<String, Integer> list = new HashMap<>();
@@ -35,13 +51,15 @@ public class Client {
         }
     }
 
-    public String getShoppingCardNumber() {
-        return shoppingCardNumber;
+    public CardNumberType getShoppingCardType() {
+        return shoppingCardType;
     }
 
-    public void setShoppingCardNumber(String shoppingCardNumber) {
-        this.shoppingCardNumber = shoppingCardNumber;
-    }
+    public void setShoppingCardType(CardNumberType shoppingCardType) { this.shoppingCardType = shoppingCardType; }
+
+    public String getShoppingCardNumber() { return shoppingCardNumber; }
+
+    public void setShoppingCardNumber(String shoppingCardNumber) { this.shoppingCardNumber = shoppingCardNumber; }
 
     public HashMap<String, Integer> getShoppingList() {
         return shoppingList;
@@ -51,10 +69,20 @@ public class Client {
         this.shoppingList = shoppingList;
     }
 
+    public CardNumberType findCardNumberTypeByLabel(String cardNumberLabel) {
+        for (CardNumberType type : CardNumberType.values()) {
+            if (type.label.equals(cardNumberLabel)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Client {" +
-                "shoppingCardNumber='" + shoppingCardNumber + '\'' +
+                "shoppingCardType='" + shoppingCardType + '\'' +
+                ", shoppingCardNumber='" + shoppingCardNumber + '\'' +
                 ", shoppingList=" + shoppingList +
                 '}';
     }

@@ -22,14 +22,15 @@ public class Store {
                 Item newItem = new Item();
                 String fetchedName = String.valueOf(entry.get(0));
                 String itemName = fetchedName.substring(0, 1).toUpperCase() + fetchedName.substring(1).toLowerCase();
-                Item.Category itemCategory = Item.Category.valueOf(String.valueOf(entry.get(1)));
+                String itemCategoryName = String.valueOf(entry.get(1));
+                Item.Category itemCategory = newItem.findCategoryByName(itemCategoryName);
                 Integer itemQuantity = Integer.parseInt((String) entry.get(2));
                 Integer itemPrice = Integer.parseInt((String) entry.get(3));
 
                 if (itemName != null && !itemName.isBlank() && itemName.matches("[a-zA-Z]+")){
                     newItem.setItemName(itemName);
                 }
-                if (itemCategory != null && newItem.findCategoryByName(itemCategory) != null){
+                if (itemCategory != null){
                     newItem.setItemCategory(itemCategory);
                 }
                 if (itemQuantity != null && itemQuantity >= 0){

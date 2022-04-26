@@ -1,9 +1,14 @@
 package cmpe.utility;
 
+import cmpe.server.Bill;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class RecordHandler {
     private final static String COMMA_DELIMITER = ",";
@@ -13,7 +18,12 @@ public class RecordHandler {
 
     public RecordHandler(String csvFilePath) {
         setCsvFilePath(csvFilePath);
-        setRecord(getConvertedRecord(csvFilePath));
+        setRecord(getRecordFromFile(csvFilePath));
+    }
+
+    public RecordHandler(String csvFilePath, Bill bill){
+        setCsvFilePath(csvFilePath);
+        setRecord(bill.generateBillingInfo());
     }
 
     public String getCsvFilePath() {
@@ -32,19 +42,19 @@ public class RecordHandler {
         this.record = record;
     }
 
-    public static List<List<String>> getConvertedRecord(String csvFilePath){
-        List<List<String>> records = new ArrayList<>();
+    public List<List<String>> getRecordFromFile(String csvFilePath){
+        List<List<String>> convertedRecords = new ArrayList<>();
         try (Scanner scanner = new Scanner(new File(csvFilePath))) {
             while (scanner.hasNextLine()) {
-                records.add(getRecordFromLine(scanner.nextLine()));
+                convertedRecords.add(getRecordEntryFromFileLine(scanner.nextLine()));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return records;
+        return convertedRecords;
     }
 
-    public static List<String> getRecordFromLine(String line) {
+    public List<String> getRecordEntryFromFileLine(String line) {
         List<String> values = new ArrayList<>();
         try (Scanner rowScanner = new Scanner(line)) {
             rowScanner.useDelimiter(COMMA_DELIMITER);
@@ -53,6 +63,20 @@ public class RecordHandler {
             }
         }
         return values;
+    }
+
+    public void getFileFromRecord() {
+        System.out.println("Generating billing_list.csv from the billing record...");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath, false))){
+            //System.out.println(record.toString());
+            for (List<String> recordEntry : record){
+                String recordEntryString =  recordEntry.stream().map(Object::toString).collect(Collectors.joining(COMMA_DELIMITER));
+                writer.write(recordEntryString);
+                writer.newLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

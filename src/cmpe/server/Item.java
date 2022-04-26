@@ -1,7 +1,6 @@
 package cmpe.server;
 
 public class Item {
-
     public enum Category {
         Essentials,
         Luxury,
@@ -56,15 +55,13 @@ public class Item {
         this.itemPrice = itemPrice;
     }
 
-    public Category findCategoryByName(Category categoryName) {
-        Category result = null;
+    public Category findCategoryByName(String categoryName) {
         for (Category category : Category.values()) {
-            if (category.equals(categoryName)) {
-                result = category;
-                break;
+            if (category.name().equalsIgnoreCase(categoryName)) {
+                return category;
             }
         }
-        return result;
+        return null;
     }
 
     @Override
