@@ -1,0 +1,8 @@
+[INFO ] 2022-04-27 17:00:46.006 [main] FileHandler - No previous error log file found to be deleted, continue to the shopping process...
+[INFO ] 2022-04-27 17:00:46.011 [main] FileHandler - Deleted the previous billing file: billing_list.csv, continue to the shopping process...
+[INFO ] 2022-04-27 17:00:46.026 [main] Record - shopping
+[INFO ] 2022-04-27 17:00:46.026 [main] Record - Shopping record Entity created: RecordHandler {csvFilePath='src/input/shopping_list.csv', record=[[Item, Quantity, CardNumber], [Shampoo, 2, 4.12E+12], [Chocolates, 1], [Wallet, 1], [Pen, 3]]}
+[INFO ] 2022-04-27 17:00:46.026 [main] Record - storage_
+[INFO ] 2022-04-27 17:00:46.026 [main] Record - Storage record Entity created: RecordHandler {csvFilePath='src/input/storage_list.csv', record=[[Item, Category, Quantity, Price (per unit)], [Clothes, Essentials, 100, 20], [Soap, Essentials, 200, 5], [Shampoo, Essentials, 200, 10], [Milk, Essentials, 100, 5], [Perfume, Luxury, 50, 50], [Chocolates, Luxury, 300, 3], [Handbag, Luxury, 75, 150], [Wallet, Luxury, 100, 100], [Bedsheet, Misc, 150, 75], [Footware, Misc, 200, 25], [HomeDecorPiece, Misc, 100, 40], [Pen, Misc, 400, 3], [Pencil, Misc, 400, 3]]}
+[INFO ] 2022-04-27 17:00:46.026 [main] Client - Client Entity created: Client {shoppingCardType='CARD_NUMBER_B', shoppingCardNumber='4.12E+12', shoppingList={Wallet=1, Shampoo=2, Pen=3, Chocolates=1}}
+[INFO ] 2022-04-27 17:00:46.042 [main] Record - Bill record Entity created: RecordHandler {csvFilePath='src/output/billing_list.csv', record=[[Item, Quantity, Price, TotalPrice], [Wallet, 1, 100, 132], [Shampoo, 2, 10], [Pen, 3, 3], [Chocolates, 1, 3]]}
