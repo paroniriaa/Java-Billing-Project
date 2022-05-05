@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
@@ -56,13 +57,24 @@ public class Client {
 
     public Client(List<List<String>> shoppingInfo) {
         logger.info("Creating client entity...");
+        checkShoppingInfoHeader(shoppingInfo);
         checkAndSetShoppingCard(shoppingInfo);
         checkAndSetShoppingList(shoppingInfo);
         logger.info("Client entity created: " + this);
     }
 
+    private void checkShoppingInfoHeader(List<List<String>> shoppingInfo){
+        logger.info("Checking client shopping list header info...");
+        List<String> header = new ArrayList<>();
+        Collections.addAll(header,"Item","Quantity","CardNumber");
+        if(!shoppingInfo.get(0).equals(header)){
+            ErrorHandler.logErrorToFileAndExit(logger, "Cannot identify current client's shopping list header info " +
+                    shoppingInfo.get(0) + ", the only accepted header info is as follows:" + header);
+        }
+    }
+
     private void checkAndSetShoppingCard(List<List<String>> shoppingInfo){
-        logger.info("Checking client shopping card info...");
+        logger.info("Checking client shopping list card info...");
         if(hasCardInfo(shoppingInfo.get(1).size())){
             String clientCardNumberLabel = String.valueOf(shoppingInfo.get(1).get(2));
             CardNumberType clientCardNumberType = findCardNumberTypeByLabel(clientCardNumberLabel);
@@ -86,7 +98,7 @@ public class Client {
     }
 
     private void checkAndSetShoppingList(List<List<String>> shoppingInfo){
-        logger.info("Checking client shopping list info...");
+        logger.info("Checking client shopping list item info...");
         shoppingInfo.remove(0);
         for (List<String> entry : shoppingInfo){
             if(isValidEntrySize(entry.size())){

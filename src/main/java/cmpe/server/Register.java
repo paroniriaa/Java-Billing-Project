@@ -150,7 +150,7 @@ public class Register {
     }
 
     private HashMap<String, Item> writeBillingList() {
-        logger.info("Performing billing record writing...");
+        logger.info("Performing billing info writing...");
         HashMap<String, Item> billingList = new HashMap<>();
         for (String item : shoppingItemsList) {
             billingList.put(item, storage.getItemList().get(item));
